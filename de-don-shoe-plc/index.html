@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Home — DE-DON SHOE PLC</title>
 <meta name="description" content="DE-DON SHOE PLC designs and manufactures premium leather footwear in Aba, Abia State. Formal shoes, loafers, sandals and palms. Nationwide delivery across Nigeria.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,11 +28,26 @@
   --sans:"Jost",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   --ease:cubic-bezier(.22,.61,.36,1);
   --pad:clamp(16px,4vw,48px);
+  /* header height for mobile drawer offset */
+  --header-h:64px;
 }
-*,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{margin:0;font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.7;
-  color:var(--ink);background:var(--milk);-webkit-font-smoothing:antialiased}
+*,*::before,*::after{box-sizing:border-box;min-width:0}
+html{
+  scroll-behavior:smooth;
+  -webkit-text-size-adjust:100%;
+  overflow-x:clip;      /* ← clip not hidden: preserves sticky */
+}
+body{
+  margin:0;
+  font-family:var(--sans);
+  font-weight:300;
+  font-size:16px;
+  line-height:1.7;
+  color:var(--ink);
+  background:var(--milk);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:clip;      /* ← clip not hidden: preserves sticky */
+}
 img{display:block;max-width:100%;height:auto}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
@@ -77,21 +92,23 @@ p{margin:0 0 1.1em}
 .link-arrow:hover{border-color:var(--ink)}
 .link-arrow:hover::after{transform:translateX(4px)}
 
+/* ============ BRAND ============ */
 .brand{display:flex;align-items:center;
-  gap:clamp(.55rem,1.6vw,.95rem);min-width:0;text-decoration:none}
-.brand__mark{flex:none;width:clamp(42px,4.4vw,56px);
-  height:clamp(42px,4.4vw,56px);display:block}
+  gap:clamp(.55rem,1.6vw,.95rem);min-width:0;text-decoration:none;flex:none}
+.brand__mark{flex:none;width:clamp(40px,4vw,52px);
+  height:clamp(40px,4vw,52px);display:block}
 .brand__text{display:flex;flex-direction:column;min-width:0;line-height:1}
 .brand__name{font-family:var(--serif);font-weight:800;
-  font-size:clamp(1rem,2.8vw,1.45rem);letter-spacing:.03em;color:var(--ink);
+  font-size:clamp(.88rem,2.4vw,1.35rem);letter-spacing:.03em;color:var(--ink);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.brand__sub{margin-top:.32rem;font-family:var(--sans);
-  font-size:clamp(.52rem,1.15vw,.66rem);font-weight:700;
-  letter-spacing:.24em;text-transform:uppercase;color:var(--ink-55);
+.brand__sub{margin-top:.28rem;font-family:var(--sans);
+  font-size:clamp(.48rem,1vw,.62rem);font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--ink-55);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .brand--light .brand__name{color:var(--milk)}
 .brand--light .brand__sub{color:var(--milk-50)}
 
+/* ============ TOPBAR ============ */
 .topbar{background:var(--ink);color:var(--milk-70);font-size:.6rem;
   letter-spacing:.14em;text-transform:uppercase}
 .topbar__inner{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
@@ -102,13 +119,31 @@ p{margin:0 0 1.1em}
   .topbar__sep{display:none}
 }
 
-.header{position:sticky;top:0;z-index:90;background:rgba(245,241,232,.97);
-  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--ink-12);transition:box-shadow .3s}
+/* ============ STICKY HEADER ============ */
+.header{
+  position:-webkit-sticky;
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(245,241,232,.97);
+  -webkit-backdrop-filter:saturate(180%) blur(12px);
+  backdrop-filter:saturate(180%) blur(12px);
+  border-bottom:1px solid var(--ink-12);
+  transition:box-shadow .3s;
+  isolation:isolate;          /* guarantees its own stacking context */
+}
 .header.is-scrolled{box-shadow:0 10px 30px -18px rgba(36,36,36,.4)}
-.header__inner{display:flex;align-items:center;justify-content:space-between;
-  gap:clamp(.4rem,2vw,1.5rem);padding-block:.65rem}
+.header__inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:clamp(.4rem,2vw,1.5rem);
+  padding-block:.65rem;
+  min-height:var(--header-h);
+}
 .header__actions{display:flex;align-items:center;gap:.5rem;flex:none}
+
+/* Desktop nav */
 .nav{display:flex;align-items:center;gap:1.5rem}
 .nav a{position:relative;padding-block:.3rem;font-size:.72rem;font-weight:500;
   letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
@@ -117,32 +152,86 @@ p{margin:0 0 1.1em}
 .nav a:hover::after,.nav a[aria-current="page"]::after{width:100%}
 .nav a[aria-current="page"]{font-weight:600}
 .nav__cta{display:none}
-.nav-toggle{display:none;width:44px;height:44px;flex-direction:column;
-  align-items:center;justify-content:center;gap:5px;flex:none}
+
+/* Hamburger */
+.nav-toggle{display:none;width:46px;height:46px;flex-direction:column;
+  align-items:center;justify-content:center;gap:5px;flex:none;
+  -webkit-tap-highlight-color:transparent}
 .nav-toggle span{display:block;width:22px;height:1.5px;background:var(--ink);
-  transition:.3s var(--ease)}
+  transition:.3s var(--ease);transform-origin:center}
 .nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
 .nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
 .nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
 .nav-scrim{position:fixed;inset:0;z-index:80;background:rgba(36,36,36,.45);
   -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
-@media (max-width:560px){ .header__cta{display:none} }
+
+/* Hide header CTA when space is very tight */
+@media (max-width:600px){ .header__cta{display:none} }
+
+/* ============ MOBILE NAV — refined ============ */
 @media (max-width:1080px){
-  .nav{position:fixed;top:0;right:0;z-index:85;height:100dvh;width:min(340px,86vw);
-    flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;
-    padding:clamp(4.5rem,12vw,5.5rem) clamp(1.4rem,5vw,2.2rem) 2rem;
-    background:var(--milk);border-left:1px solid var(--ink-12);
-    transform:translateX(105%);transition:transform .4s var(--ease);
-    overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .nav{
+    position:fixed;
+    top:0;
+    right:0;
+    z-index:95;
+    height:100dvh;
+    height:100vh;                    /* fallback for older browsers */
+    width:min(380px,90vw);           /* a touch wider than before */
+    flex-direction:column;
+    align-items:stretch;
+    justify-content:flex-start;
+    gap:0;
+    padding:
+      calc(var(--header-h) + 1.5rem)
+      clamp(1.4rem,5vw,2.4rem)
+      calc(2rem + env(safe-area-inset-bottom,0px));
+    background:var(--milk);
+    border-left:1px solid var(--ink-12);
+    transform:translateX(105%);
+    transition:transform .4s var(--ease);
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+  }
   .nav.is-open{transform:none}
-  .nav a{font-size:.95rem;padding-block:.85rem;border-bottom:1px solid var(--ink-12)}
+  .nav a{
+    font-size:1rem;
+    padding-block:1rem;
+    border-bottom:1px solid var(--ink-12);
+    min-height:52px;
+    display:flex;
+    align-items:center;
+  }
   .nav a::after{display:none}
-  .nav a[aria-current="page"]{font-weight:600}
-  .nav__cta{display:inline-flex;margin-top:1.4rem;width:100%}
-  .nav-toggle{display:flex;z-index:86}
+  .nav a[aria-current="page"]{font-weight:600;color:var(--ink)}
+  .nav a[aria-current="page"]::before{
+    content:"";
+    display:inline-block;
+    width:6px;height:6px;
+    background:var(--ink);
+    margin-right:.6rem;
+    transform:rotate(45deg);
+  }
+  .nav__cta{display:inline-flex;margin-top:1.6rem;width:100%}
+  .nav-toggle{display:flex;z-index:96}
 }
 
-/* HERO */
+/* Extra safe area at very small widths */
+@media (max-width:400px){
+  .brand__mark{width:36px;height:36px}
+  .brand__name{font-size:.82rem;letter-spacing:.02em}
+  .brand__sub{font-size:.44rem;letter-spacing:.16em;margin-top:.2rem}
+  .nav-toggle{width:42px;height:42px}
+  .header__inner{padding-block:.55rem;gap:.4rem}
+}
+@media (max-width:340px){
+  .brand__mark{width:32px;height:32px}
+  .brand__name{font-size:.76rem}
+  .brand__sub{display:none}
+}
+
+/* ============ HERO ============ */
 .hero{position:relative;display:flex;align-items:center;
   min-height:min(86vh,760px);overflow:hidden;background:var(--ink)}
 .hero-slides{position:absolute;inset:0;display:flex;
@@ -179,6 +268,10 @@ p{margin:0 0 1.1em}
   .hero__foot{font-size:.5rem;letter-spacing:.1em;padding:.6rem var(--pad)}
   .hero-controls{bottom:58px}
 }
+@media (max-width:400px){
+  .hero__title{font-size:1.9rem}
+  .hero__actions .btn{flex:1 1 100%}
+}
 @media (max-height:500px){
   .hero{min-height:auto}
   .hero__content{padding-block:56px 110px}
@@ -186,7 +279,7 @@ p{margin:0 0 1.1em}
 }
 @media (prefers-reduced-motion:reduce){ .hero-slides{transition:none} }
 
-/* TRUST */
+/* ============ TRUST ============ */
 .trust{background:var(--milk);border-bottom:1px solid var(--ink-12)}
 .trust__grid{display:grid;grid-template-columns:repeat(4,1fr)}
 .trust__item{padding:2.2rem 1.4rem;border-left:1px solid var(--ink-12)}
@@ -206,7 +299,7 @@ p{margin:0 0 1.1em}
   .trust__item,.trust__item:nth-child(odd){border-left:0;padding-left:0;padding-right:0}
 }
 
-/* SPLIT */
+/* ============ SPLIT ============ */
 .split{display:grid;grid-template-columns:1fr 1fr;
   gap:clamp(1.8rem,6vw,5rem);align-items:center}
 .figure{position:relative;margin:0;max-width:100%}
@@ -220,7 +313,7 @@ p{margin:0 0 1.1em}
   .figure__frame{inset:12px -12px -12px 12px}
 }
 
-/* PRODUCTS */
+/* ============ PRODUCTS ============ */
 .product-grid{display:grid;grid-template-columns:repeat(4,1fr);
   gap:clamp(1.1rem,2.4vw,2.2rem)}
 .product{display:flex;flex-direction:column;min-width:0}
@@ -246,7 +339,7 @@ p{margin:0 0 1.1em}
   .product-grid{grid-template-columns:1fr;gap:1.5rem}
 }
 
-/* COLLECTIONS */
+/* ============ COLLECTIONS ============ */
 .collection-grid{display:grid;grid-template-columns:repeat(4,1fr);
   gap:clamp(.8rem,2vw,1.4rem)}
 .collection{position:relative;display:flex;align-items:flex-end;overflow:hidden;
@@ -268,7 +361,7 @@ p{margin:0 0 1.1em}
 @media (max-width:820px){.collection-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:520px){.collection-grid{grid-template-columns:1fr}}
 
-/* CRAFT BAND */
+/* ============ CRAFT BAND ============ */
 .craft-band{position:relative;overflow:hidden;background:var(--ink);color:var(--milk)}
 .craft-band__media{position:absolute;inset:0}
 .craft-band__media img{width:100%;height:100%;object-fit:cover;opacity:.3}
@@ -287,7 +380,7 @@ p{margin:0 0 1.1em}
   .steps li{font-size:.62rem;letter-spacing:.12em}
 }
 
-/* CTA */
+/* ============ CTA ============ */
 .cta-band{display:grid;grid-template-columns:1.4fr 1fr;gap:2rem;
   align-items:center;padding:clamp(1.4rem,5vw,3.2rem);
   border:1px solid var(--ink-20)}
@@ -299,7 +392,7 @@ p{margin:0 0 1.1em}
   .cta-band__actions .link-arrow{align-self:flex-start}
 }
 
-/* FOOTER */
+/* ============ FOOTER ============ */
 .footer{position:relative;padding-top:clamp(2.6rem,7vw,5.2rem);
   background:var(--ink);color:var(--milk)}
 .footer::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;
@@ -433,38 +526,20 @@ p{margin:0 0 1.1em}
 
 <main>
 
-  <!-- HERO SLIDER — 4 verified product-only images -->
   <section class="hero" aria-roledescription="carousel" aria-label="Featured footwear">
     <div class="hero-slides" id="heroSlides">
-
-      <!-- Slide 1 — Formal Oxford / Brogue -->
       <div class="hero-slide">
-        <img src="../img/shoe 3.webp"
-             alt="Brown leather Oxford brogue shoes"
-             fetchpriority="high">
+        <img src="../img/shoe 3.webp" alt="Brown leather Oxford brogue shoes" fetchpriority="high">
       </div>
-
-      <!-- Slide 2 — Penny Loafer -->
       <div class="hero-slide">
-        <img src="../img/sandals1.webp"
-             alt="Pair of brown leather penny loafers"
-             loading="lazy">
+        <img src="../img/sandals1.webp" alt="Pair of brown leather penny loafers" loading="lazy">
       </div>
-
-      <!-- Slide 3 — Braided Leather Sandal -->
       <div class="hero-slide">
-        <img src="../img/palm4.avif"
-             alt="Brown and black leather sandals"
-             loading="lazy">
+        <img src="../img/palm4.avif" alt="Brown and black leather sandals" loading="lazy">
       </div>
-
-      <!-- Slide 4 — Palm Slipper / Leather Slide -->
       <div class="hero-slide">
-        <img src="../img/palm2.jpg"
-             alt="Brown leather palm slide slipper"
-             loading="lazy">
+        <img src="../img/palm2.jpg" alt="Brown leather palm slide slipper" loading="lazy">
       </div>
-
     </div>
 
     <div class="hero-overlay" aria-hidden="true"></div>
@@ -489,7 +564,6 @@ p{margin:0 0 1.1em}
     <div class="hero__foot">Victory Line Shoe Plaza &middot; Aba &middot; Abia State &middot; Nigeria</div>
   </section>
 
-  <!-- TRUST STRIP -->
   <section class="trust">
     <div class="container trust__grid">
       <div class="trust__item">
@@ -515,7 +589,6 @@ p{margin:0 0 1.1em}
     </div>
   </section>
 
-  <!-- INTRO -->
   <section class="section">
     <div class="container split">
       <div class="split__body reveal">
@@ -528,15 +601,13 @@ p{margin:0 0 1.1em}
       </div>
       <figure class="figure reveal">
         <div class="figure__img">
-          <img src="../img/shoe4.webp"
-               alt="Leather loafer detail" loading="lazy" decoding="async">
+          <img src="../img/shoe4.webp" alt="Leather loafer detail" loading="lazy" decoding="async">
         </div>
         <span class="figure__frame" aria-hidden="true"></span>
       </figure>
     </div>
   </section>
 
-  <!-- FEATURED PRODUCTS -->
   <section class="section section--tint">
     <div class="container">
       <div class="section-head">
@@ -550,13 +621,12 @@ p{margin:0 0 1.1em}
 
         <article class="product">
           <a class="product__media" href="order.html?category=Formal" aria-label="The Aba Oxford">
-            <img src="../img/shoe 3.webp"
-                 alt="The Aba Oxford" loading="lazy" decoding="async">
+            <img src="../img/shoe 3.webp" alt="The Aba Oxford" loading="lazy" decoding="async">
             <span class="product__tag">Signature</span>
           </a>
           <div class="product__body">
             <span class="product__cat">Formal</span>
-            <a class="product__name" href="../img/shoe5.jpg">The Aba Oxford</a>
+            <a class="product__name" href="order.html?category=Formal">The Aba Oxford</a>
             <span class="product__price">₦78,000</span>
             <div class="product__actions">
               <a class="btn btn--outline btn--sm"
@@ -571,8 +641,7 @@ p{margin:0 0 1.1em}
 
         <article class="product">
           <a class="product__media" href="order.html?category=Loafers" aria-label="Heritage Penny Loafer">
-            <img src="../img/shoe4.webp"
-                 alt="Heritage Penny Loafer" loading="lazy" decoding="async">
+            <img src="../img/shoe4.webp" alt="Heritage Penny Loafer" loading="lazy" decoding="async">
           </a>
           <div class="product__body">
             <span class="product__cat">Loafers</span>
@@ -591,8 +660,7 @@ p{margin:0 0 1.1em}
 
         <article class="product">
           <a class="product__media" href="order.html?category=Sandals" aria-label="Braided Leather Sandal">
-            <img src="../img/sandals2.webp"
-                 alt="Braided Leather Sandal" loading="lazy" decoding="async">
+            <img src="../img/sandals2.webp" alt="Braided Leather Sandal" loading="lazy" decoding="async">
           </a>
           <div class="product__body">
             <span class="product__cat">Sandals</span>
@@ -611,8 +679,7 @@ p{margin:0 0 1.1em}
 
         <article class="product">
           <a class="product__media" href="order.html?category=Palms" aria-label="Classic Palm Slipper">
-            <img src="../img/palm3.avif"
-                 alt="Classic Palm Slipper" loading="lazy" decoding="async">
+            <img src="../img/palm3.avif" alt="Classic Palm Slipper" loading="lazy" decoding="async">
           </a>
           <div class="product__body">
             <span class="product__cat">Palms</span>
@@ -633,7 +700,6 @@ p{margin:0 0 1.1em}
     </div>
   </section>
 
-  <!-- COLLECTIONS PREVIEW -->
   <section class="section">
     <div class="container">
       <div class="section-head section-head--center">
@@ -645,8 +711,7 @@ p{margin:0 0 1.1em}
       <div class="collection-grid">
 
         <a class="collection reveal" href="order.html?category=Formal">
-          <img src="../img/shoe5.jpg"
-               alt="Formal leather Oxford shoes" loading="lazy" decoding="async">
+          <img src="../img/shoe5.jpg" alt="Formal leather Oxford shoes" loading="lazy" decoding="async">
           <div class="collection__body">
             <span>Collection</span>
             <h3>Formal</h3>
@@ -655,8 +720,7 @@ p{margin:0 0 1.1em}
         </a>
 
         <a class="collection reveal" href="order.html?category=Loafers">
-          <img src="../img/shoe4.webp"
-               alt="Leather penny loafers" loading="lazy" decoding="async">
+          <img src="../img/shoe4.webp" alt="Leather penny loafers" loading="lazy" decoding="async">
           <div class="collection__body">
             <span>Collection</span>
             <h3>Loafers</h3>
@@ -665,8 +729,7 @@ p{margin:0 0 1.1em}
         </a>
 
         <a class="collection reveal" href="order.html?category=Sandals">
-          <img src="../img/sandals1.webp"
-               alt="Braided leather sandals" loading="lazy" decoding="async">
+          <img src="../img/sandals1.webp" alt="Braided leather sandals" loading="lazy" decoding="async">
           <div class="collection__body">
             <span>Collection</span>
             <h3>Sandals</h3>
@@ -675,8 +738,7 @@ p{margin:0 0 1.1em}
         </a>
 
         <a class="collection reveal" href="order.html?category=Palms">
-          <img src="../img/sandals3.webp"
-               alt="Leather palm slippers" loading="lazy" decoding="async">
+          <img src="../img/sandals3.webp" alt="Leather palm slippers" loading="lazy" decoding="async">
           <div class="collection__body">
             <span>Collection</span>
             <h3>Palms</h3>
@@ -691,11 +753,9 @@ p{margin:0 0 1.1em}
     </div>
   </section>
 
-  <!-- MANUFACTURING TEASER -->
   <section class="craft-band">
     <div class="craft-band__media">
-      <img src="../img/palm3.avif"
-           alt="Leather shoe stitching machine" loading="lazy" decoding="async">
+      <img src="../img/palm3.avif" alt="Leather shoe stitching machine" loading="lazy" decoding="async">
     </div>
     <div class="container craft-band__inner">
       <p class="eyebrow eyebrow--on-dark">Manufacturing</p>
@@ -711,7 +771,6 @@ p{margin:0 0 1.1em}
     </div>
   </section>
 
-  <!-- CTA -->
   <section class="section">
     <div class="container cta-band reveal">
       <div>
@@ -803,10 +862,11 @@ window.addEventListener("scroll", function(){
   header.classList.toggle("is-scrolled", window.scrollY > 10);
 }, { passive:true });
 
-/* Mobile nav */
+/* Mobile nav — reliable open/close, focus-safe, scroll-locked */
 var toggle = document.getElementById("navToggle");
 var nav = document.getElementById("nav");
 var scrim = document.getElementById("navScrim");
+
 function setNav(open){
   nav.classList.toggle("is-open", open);
   toggle.setAttribute("aria-expanded", open ? "true" : "false");
@@ -814,15 +874,22 @@ function setNav(open){
   document.body.style.overflow = open ? "hidden" : "";
   scrim.hidden = !open;
 }
+function closeNav(){ setNav(false); }
+
 toggle.addEventListener("click", function(){
   setNav(!nav.classList.contains("is-open"));
 });
-scrim.addEventListener("click", function(){ setNav(false); });
+scrim.addEventListener("click", closeNav);
 document.addEventListener("keydown", function(e){
-  if (e.key === "Escape") setNav(false);
+  if (e.key === "Escape") closeNav();
 });
 nav.querySelectorAll("a").forEach(function(a){
-  a.addEventListener("click", function(){ setNav(false); });
+  a.addEventListener("click", closeNav);
+});
+
+/* Close drawer if user resizes past the mobile breakpoint */
+window.addEventListener("resize", function(){
+  if (window.innerWidth > 1080) closeNav();
 });
 
 /* Hero slider */
